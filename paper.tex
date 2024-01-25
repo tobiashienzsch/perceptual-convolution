@@ -1,0 +1,174 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\geometry{
+    a4paper,
+}
+\hypersetup{
+    pdftitle={Perceptual Convolution},
+    pdfauthor={Tobias Hienzsch},
+}
+
+\title{Perceptual Convolution}
+\author{Tobias Hienzsch}
+\date{\today}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\thispagestyle{empty}
+\listoffigures
+\listoftables
+\newpage
+
+\pagenumbering{arabic}
+
+\chapter{Dynamic Range}
+
+Dynamic range describes the ratio of the amplitude of the loudest possible
+undistorted signal to the noise floor. The maximum achievable dynamic range for
+a digital audio system with Q-bit uniform quantization:
+\footnote{\url{https://en.wikipedia.org/wiki/Dynamic_range}}
+
+\begin{equation}
+    \begin{split}
+        DR_{analog}  & = 20\log_{10} \left(\frac{V_{ceiling}}{V_{floor}}\right) \\
+        DR_{digital} & = 20\log_{10} \left(\frac{2^Q}{1}\right) \\
+                     & = 6.02 * Q
+    \end{split}
+\end{equation}
+
+\begin{center}
+
+\end{center}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{||c c c||}
+        \hline
+        Bit-Depth & Dynamic-Range (dB) & Example Application \\
+        \hline
+        \hline
+        8 & 48.16 & Legacy Hardware \\
+        \hline
+        12 & 72.24 & Legacy Hardware \\
+        \hline
+        16 & 96.32 & Audio-CD \\
+        \hline
+        24 & 144.49 & High-quality ADC/DAC \\
+        \hline
+        32 & 192.65 & Digital Audio Workstation (DAW) \\
+        \hline
+        64 & 385.31 & Scientific Computing \\
+        \hline
+    \end{tabular}
+    \caption{Dynamic-Range for given Bit-Depth}
+    \label{table:1}
+\end{table}
+
+\section{Crest Factor}
+
+
+When choosing quantization for any signal $x[t]$ your SNR for the quantization
+noise is determined by the crest factor of the signal which is the peak divided
+by the RMS value, i.e.
+
+\begin{equation}
+    C_x = \frac{x_{peak}}{x_{rms}}
+\end{equation}
+
+If you quantize with N bits at the clipping level, your quantization step, will
+be (assuming signed signals)
+
+\begin{equation}
+    \Delta_q = \frac{x_{peak}}{2^{N-1}}
+\end{equation}
+
+and the quantization noise in dB is
+
+\begin{equation}
+    \begin{split}
+        L_q & = 20\log_{10} \frac{\Delta_q}{\sqrt{12}} \\
+            & = 20\log_{10} \frac{x_{peak}}{2^{N-1}\sqrt{12}}
+    \end{split}
+\end{equation}
+
+and you SNR becomes
+
+\begin{equation}
+    \begin{split}
+        SNR & = 20\log_{10} x_{rms} - L_q \\
+            & = 20\log_{10} 2^{N-1}\sqrt{12}\frac{x_{rms}}{x_{peak}} \\
+            & = 20\log_{10} \frac{2^{N-1}\sqrt{12}}{C_x}
+    \end{split}
+\end{equation}
+
+So it's inversely proportional to the Crest factor. Most audio signals have a
+"moderate" Crest factor in the time domain, maybe 15 dB or so, which gives you
+an SNR of 86dB or thereabouts for 16-bit quantization. Not great, but not
+terrible either.
+
+However the Crest factor in the frequency domain can be much higher. An extreme
+case is a full scale sine wave, which has a crest factor of roughy
+
+\begin{equation}
+    C_{sine,frequency} = \sqrt{\frac{M_{FFT}}{2}} \tag{5}
+\end{equation}
+
+Where $M_{FFT}$ is the FFT length. For an FFT length of 2048 and 16 bit
+quantization this comes out to be a whopping 30 dB, reduces your SNR to the
+70 dB range.
+
+You have to decide whether this is acceptable for your application or you have
+to deploy some dynamic stage scaling scheme in your FFT.
+
+See full conversation on dsp.stackexchange.com
+\footnote{\url{https://dsp.stackexchange.com/questions/91811}}
+
+\chapter{Sample Data-Type}
+
+\section{Integer}
+
+\section{Fixed-Point}
+
+\subsection{Arithmetic}
+
+\begin{lstlisting}[language=C++]
+
+constexpr int16_t Q = 1;
+constexpr int16_t K = 1 << (Q - 1);
+
+int16_t sat16(int32_t x)
+{
+	if (x > 0x7FFF) return 0x7FFF;
+	else if (x < -0x8000) return -0x8000;
+	else return (int16_t)x;
+}
+
+int16_t add(int16_t x, int16_t y) {
+    return x + y
+}
+int16_t sub(int16_t x, int16_t y) {
+    return x - y
+}
+int16_t mul(int16_t x, int16_t y) {
+    int32_t tmp = (int32_t)(x) * (int32_t)(y);
+    tmp += K;
+    return sat16(tmp >> Q);
+}
+\end{lstlisting}
+
+\subsection{SIMD Support}
+
+\section{Floating-Point}
+
+\end{document}
