@@ -5,6 +5,8 @@ all: clean build
 build:
 	mkdir -p build
 	pdflatex --output-dir=build paper.tex
+	bibtex build/paper
+	pdflatex --output-dir=build paper.tex
 	pdflatex --output-dir=build paper.tex
 
 .PHONY: clean

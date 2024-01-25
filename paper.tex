@@ -1,6 +1,8 @@
 \documentclass{report}
 
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{listings}
@@ -28,20 +30,28 @@
 \thispagestyle{empty}
 \listoffigures
 \listoftables
+\listofalgorithms
 \newpage
 
 \pagenumbering{arabic}
 
-\chapter{Dynamic Range}
+\chapter{Signal Analysis}
+
+\section{Dynamic Range}
 
 Dynamic range describes the ratio of the amplitude of the loudest possible
-undistorted signal to the noise floor. The maximum achievable dynamic range for
-a digital audio system with Q-bit uniform quantization:
+undistorted signal to the noise floor. \cite{Mller2021}
+
+\begin{equation}
+    DR_{analog} = 20\log_{10} \left(\frac{V_{ceiling}}{V_{floor}}\right)
+\end{equation}
+
+The maximum achievable dynamic range for a digital audio system with Q-bit
+uniform quantization:
 \footnote{\url{https://en.wikipedia.org/wiki/Dynamic_range}}
 
 \begin{equation}
     \begin{split}
-        DR_{analog}  & = 20\log_{10} \left(\frac{V_{ceiling}}{V_{floor}}\right) \\
         DR_{digital} & = 20\log_{10} \left(\frac{2^Q}{1}\right) \\
                      & = 6.02 * Q
     \end{split}
@@ -121,7 +131,7 @@ However the Crest factor in the frequency domain can be much higher. An extreme
 case is a full scale sine wave, which has a crest factor of roughy
 
 \begin{equation}
-    C_{sine,frequency} = \sqrt{\frac{M_{FFT}}{2}} \tag{5}
+    C_{sine,frequency} = \sqrt{\frac{M_{FFT}}{2}}
 \end{equation}
 
 Where $M_{FFT}$ is the FFT length. For an FFT length of 2048 and 16 bit
@@ -134,9 +144,11 @@ to deploy some dynamic stage scaling scheme in your FFT.
 See full conversation on dsp.stackexchange.com
 \footnote{\url{https://dsp.stackexchange.com/questions/91811}}
 
-\chapter{Sample Data-Type}
+\chapter{Sample Representation}
 
 \section{Integer}
+
+\section{Floating-Point}
 
 \section{Fixed-Point}
 
@@ -167,8 +179,55 @@ int16_t mul(int16_t x, int16_t y) {
 }
 \end{lstlisting}
 
+\begin{algorithm}
+    \caption{An algorithm with caption}\label{alg:cap}
+    \begin{algorithmic}[1]
+        \Require $n \geq 0$
+        \Ensure $y = x^n$
+        \State $y \gets 1$
+        \State $X \gets x$
+        \State $N \gets n$
+        \While{$N \neq 0$}
+        \If{$N$ is even}
+            \State $X \gets X \times X$
+            \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
+        \ElsIf{$N$ is odd}
+            \State $y \gets y \times X$
+            \State $N \gets N - 1$
+        \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
 \subsection{SIMD Support}
 
-\section{Floating-Point}
+Random citation \cite{Wefers2014} embeddeed in \cite{Takahashi2019} text
+\cite{Akujuobi2022}.
+
+\chapter{Matrix Representation}
+
+\section{Dense}
+
+\begin{equation}
+    \begin{split}
+        Bytes & = N_{rows} * N_{cols} * sizeof(Sample) \\
+    \end{split}
+\end{equation}
+
+\section{Sparse}
+
+\subsection{CSR}
+
+\begin{equation}
+    \begin{split}
+        Bytes_{v} & = N_{nonzero} * sizeof(Sample) \\
+        Bytes_{i} & = N_{nonzero} * sizeof(Index) + N_{rows} * sizeof(Index) \\
+        Bytes     & = Bytes_{v} + Bytes_{i} \\
+    \end{split}
+\end{equation}
+
+\newpage
+\bibliography{library}
+\bibliographystyle{ieeetr}
 
 \end{document}
