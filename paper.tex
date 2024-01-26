@@ -1,17 +1,20 @@
-\documentclass{report}
+\documentclass[oneside]{report}
 
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{geometry}
-\usepackage{hyperref}
 \usepackage{listings}
 \geometry{
     a4paper,
 }
+
+\usepackage{hyperref}
 \hypersetup{
     pdftitle={Perceptual Convolution},
     pdfauthor={Tobias Hienzsch},
+    bookmarksnumbered=true,
+    pdfpagemode=UseOutlines,    % this is the option you were lookin for
 }
 
 \title{Perceptual Convolution}
@@ -35,7 +38,7 @@
 
 \pagenumbering{arabic}
 
-\chapter{Signal Analysis}
+\chapter{Digital Signals}
 
 \section{Dynamic Range}
 
@@ -144,11 +147,18 @@ to deploy some dynamic stage scaling scheme in your FFT.
 See full conversation on dsp.stackexchange.com
 \footnote{\url{https://dsp.stackexchange.com/questions/91811}}
 
+\section{Dither}
+\subsection{Rectangle Dither}
+\subsection{Triangle Dither}
+\subsection{Shaped Dither}
+
 \chapter{Sample Representation}
 
 \section{Integer}
+\subsection{SIMD}
 
 \section{Floating-Point}
+\subsection{SIMD}
 
 \section{Fixed-Point}
 
@@ -199,10 +209,10 @@ int16_t mul(int16_t x, int16_t y) {
     \end{algorithmic}
 \end{algorithm}
 
-\subsection{SIMD Support}
+\subsection{SIMD}
 
 Random citation \cite{Wefers2014} embeddeed in \cite{Takahashi2019} text
-\cite{Akujuobi2022}.
+\cite{Vorlnder2020}.
 
 \chapter{Matrix Representation}
 
