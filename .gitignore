@@ -2,4 +2,7 @@
 .vs
 .vscode
 
-/build
+/_book
+/.quarto
+/venv
+/.quarto/

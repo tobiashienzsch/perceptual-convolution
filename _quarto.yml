@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "Perceptual Convolution"
+  author: "Tobias Hienzsch"
+  date: "1/26/2024"
+  chapters:
+    - index.qmd
+    - src/intro.qmd
+    - src/digital_signals.qmd
+    - src/sample_representation.qmd
+    - src/matrix_representation.qmd
+    - src/references.qmd
+
+toc: true
+number-sections: true
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+    colorlinks: true
+    papersize: a4

@@ -1,0 +1,33 @@
+# Matrix Representation
+
+|    Layout    |         C++         |    Numpy    |
+| :----------: | :-----------------: | :---------: |
+| Column-Major | `std::layout_left`  | `order="F"` |
+|  Row-Major   | `std::layout_right` | `order="C"` |
+
+: Matrix Layout in C++ and Python {#tbl-matrix-cxx-python}
+
+## Dense
+
+$$
+Bytes = N_{rows} * N_{cols} * sizeof(Sample)
+$$ {#eq-dense-matrix-memory}
+
+## Sparse
+
+### CSR
+
+$$
+\begin{split}
+    Bytes_{v} & = N_{nonzero} * sizeof(Sample) \\
+    Bytes_{i} & = N_{nonzero} * sizeof(Index) + N_{rows} * sizeof(Index) \\
+    Bytes     & = Bytes_{v} + Bytes_{i} \\
+\end{split}
+$$ {#eq-csr-matrix-memory}
+
+
+::: {.callout-tip}
+## Tip with Title
+
+This is an example of a callout with a title.
+:::
