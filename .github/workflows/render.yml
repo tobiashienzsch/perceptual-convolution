@@ -22,3 +22,11 @@ jobs:
 
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Render
+          path: _book
+          if-no-files-found: error
+          retention-days: 7
