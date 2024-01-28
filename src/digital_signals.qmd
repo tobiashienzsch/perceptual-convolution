@@ -19,16 +19,36 @@ $$
 \end{split}
 $$ {#eq-dynamic-range-digital}
 
-| Bit-Depth | Dynamic Range (dB) |           Application           |
-| :-------: | :----------------: | :-----------------------------: |
-|     8     |       48.16        |         Legacy Hardware         |
-|    12     |       72.24        |         Legacy Hardware         |
-|    16     |       96.32        |            Audio-CD             |
-|    24     |       144.49       |      High-quality ADC/DAC       |
-|    32     |       192.65       | Digital Audio Workstation (DAW) |
-|    64     |       385.31       |      Scientific Computing       |
 
-: Dynamic-Range for given Bit-Depth {#tbl-bit-depth}
+```{python}
+#| echo: false
+#| label: tbl-bit-depth
+#| tbl-cap: Dynamic-Range for given Bit-Depth
+
+from IPython.display import Markdown
+from math import log10
+from tabulate import tabulate
+
+
+def dynamic_range(Q):
+    return round(20*log10(pow(2, Q)), 2)
+
+
+table = [
+    [8, dynamic_range(8), "Legacy Hardware"],
+    [12, dynamic_range(12), "Legacy Hardware"],
+    [16, dynamic_range(16), "Audio-CD"],
+    [24, dynamic_range(24), "High-quality ADC/DAC"],
+    [32, dynamic_range(32), "Digital Audio Workstation (DAW)"],
+    [64, dynamic_range(64), "Scientific Computing"],
+]
+
+Markdown(tabulate(
+    table,
+    headers=["Bit-Depth", "Dynamic Range (dB)", "Application"],
+    stralign="center"
+))
+```
 
 ## Crest Factor
 
