@@ -25,8 +25,74 @@ $$
 \end{split}
 $$ {#eq-csr-matrix-memory}
 
+### CSC
+
+$$
+\begin{split}
+    Bytes_{v} & = N_{nonzero} * sizeof(Sample) \\
+    Bytes_{i} & = N_{nonzero} * sizeof(Index) + N_{cols} * sizeof(Index) \\
+    Bytes     & = Bytes_{v} + Bytes_{i} \\
+\end{split}
+$$ {#eq-csr-matrix-memory}
+
 ::: {.callout-tip}
 ## Tip with Title
 
 This is an example of a callout with a title.
 :::
+
+
+```{python}
+#| echo: false
+#| label: fig-sparse-memory-footprint
+#| fig-cap: Memory savings of a sparse matrix.
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def csr_matrix_memory_usage(rows, cols, usage, sizeof_T, sizeof_I):
+    size = rows*cols
+    return (size*sizeof_T*usage) + (size*sizeof_I*usage) + (rows*sizeof_I)
+
+def csr_matrix_memory_savings(rows, cols, sizeof_T, sizeof_I):
+    size = rows*cols
+    dense_bytes = size*sizeof_T
+    usage = np.asarray([x for x in range(5, 105, 5)])
+    sparse_bytes = csr_matrix_memory_usage(rows, cols, usage/100, sizeof_T, sizeof_I)
+    savings = (dense_bytes-sparse_bytes) / (dense_bytes)
+    return usage, savings
+
+
+def sparse_matrix_savings():
+    sizeof_T = 8
+    sizeof_I = 4
+
+    rows = 375
+    cols = 513
+
+    usage, savings84 = csr_matrix_memory_savings(rows, cols, 8, 4)
+    usage, savings88 = csr_matrix_memory_savings(rows, cols, 8, 8)
+
+    label84 = "sizeof(Index) == 4"
+    label88 = "sizeof(Index) == 8"
+
+    fig, ax = plt.subplots()
+
+    ax.set_title("sizeof(T) == 8")
+    ax.set_xlabel("Usage %")
+    ax.set_ylabel("Savings %")
+
+    width = 2
+    ax.bar(usage, np.round(savings84*100, width), width=width, label=label84)
+    ax.bar(usage+width, np.round(savings88*100, width), width=width, label=label88)
+
+    ax.grid()
+    ax.legend()
+
+    fig.tight_layout()
+    plt.show()
+
+
+sparse_matrix_savings()
+```

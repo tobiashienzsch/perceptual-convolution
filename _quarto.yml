@@ -11,6 +11,7 @@ book:
     - src/digital_signals.qmd
     - src/sample_representation.qmd
     - src/matrix_representation.qmd
+    - src/coefficient_selection.qmd
     - src/references.qmd
 
 toc: true

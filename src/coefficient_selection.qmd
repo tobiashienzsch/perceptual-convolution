@@ -1,0 +1,43 @@
+# Coefficient Selection
+
+## Naive
+
+```{mermaid}
+%%| label: fig-naive-coefficient-selection
+%%| fig-cap: "Naive coefficient selection"
+%%| fig-width: 5.5
+flowchart LR
+  Normalize(Normalize) --> ToDecibel(Convert to dB)
+  ToDecibel --> Decision{Above Threshold?}
+  Decision --> |Yes| Keep(Keep Coefficient)
+  Decision --> |No| Discard(Discard Coefficient)
+```
+
+## Frequency Weighted
+
+```{mermaid}
+%%| label: fig-weighted-coefficient-selection
+%%| fig-cap: "Frequency weighted coefficient selection"
+%%| fig-width: 5.5
+flowchart LR
+  Normalize(Normalize) --> ToDecibel(Convert to dB)
+  ToDecibel --> Weighting(Frequency Weighting)
+  Weighting --> Decision{Above Threshold?}
+  Decision --> |Yes| Keep(Keep Coefficient)
+  Decision --> |No| Discard(Discard Coefficient)
+```
+
+## Dithered
+
+```{mermaid}
+%%| label: fig-dithered-coefficient-selection
+%%| fig-cap: "Frequency dithered coefficient selection"
+%%| fig-width: 5.5
+flowchart LR
+  Normalize(Normalize) --> ToDecibel(Convert to dB)
+  ToDecibel --> Weighting(Frequency Weighting)
+  Weighting --> Dither(Dither)
+  Dither --> Decision{Above Threshold?}
+  Decision --> |Yes| Keep(Keep Coefficient)
+  Decision --> |No| Discard(Discard Coefficient)
+```
