@@ -20,7 +20,7 @@ jobs:
         with:
           tinytex: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           cache: "pip"
           python-version: "3.x"
