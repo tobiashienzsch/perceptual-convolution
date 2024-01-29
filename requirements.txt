@@ -1,5 +1,4 @@
 jupyter
 matplotlib
 numpy
-plotly
 tabulate

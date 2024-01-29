@@ -25,7 +25,6 @@ $$
 \end{split}
 $$ {#eq-csr-matrix-memory}
 
-
 ::: {.callout-tip}
 ## Tip with Title
 
