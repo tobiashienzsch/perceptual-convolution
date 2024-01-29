@@ -20,6 +20,12 @@ jobs:
         with:
           tinytex: true
 
+      - uses: actions/setup-python@v4
+        with:
+          cache: "pip"
+          python-version: "3.x"
+      - run: pip install -r requirements.txt
+
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
 
