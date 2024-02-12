@@ -20,7 +20,7 @@ $$ {#eq-dense-matrix-memory}
 $$
 \begin{split}
     Bytes_{v} & = N_{nonzero} * sizeof(Sample) \\
-    Bytes_{i} & = N_{nonzero} * sizeof(Index) + N_{rows} * sizeof(Index) \\
+    Bytes_{i} & = N_{nonzero} * sizeof(Index) + (N_{rows} + 1) * sizeof(Index) \\
     Bytes     & = Bytes_{v} + Bytes_{i} \\
 \end{split}
 $$ {#eq-csr-matrix-memory}
@@ -30,7 +30,7 @@ $$ {#eq-csr-matrix-memory}
 $$
 \begin{split}
     Bytes_{v} & = N_{nonzero} * sizeof(Sample) \\
-    Bytes_{i} & = N_{nonzero} * sizeof(Index) + N_{cols} * sizeof(Index) \\
+    Bytes_{i} & = N_{nonzero} * sizeof(Index) + (N_{cols} + 1) * sizeof(Index) \\
     Bytes     & = Bytes_{v} + Bytes_{i} \\
 \end{split}
 $$ {#eq-csr-matrix-memory}
